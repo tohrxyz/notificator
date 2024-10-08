@@ -5,14 +5,30 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
+
+	"github.com/joho/godotenv"
 )
 
 func QueryPosition() (string, error) {
-	url := "https://gateway.thegraph.com/api/d833bfbf3d9626e58686a9e30befe1cc/subgraphs/id/4xyasjQeREe7PxnF6wVdobZvCw5mhoHZq3T7guRpuNPf"
+	err := godotenv.Load()
+	if err != nil {
+		panic(err)
+	}
+	apiToken := os.Getenv("THE_GRAPH_API_KEY")
+	if apiToken == "" {
+		panic("No Graph api token available")
+	}
+	ethAccount := os.Getenv("ETH_ACCOUNT")
+	if ethAccount == "" {
+		panic("No Graph api token available")
+	}
+
+	url := fmt.Sprintf(`https://gateway.thegraph.com/api/%s/subgraphs/id/4xyasjQeREe7PxnF6wVdobZvCw5mhoHZq3T7guRpuNPf`, apiToken)
 
 	// Construct the GraphQL query
-	query := `{
-		account(id: "0xacd125940C8380fac9b1323D563faEAAbdae8d54") {
+	query := fmt.Sprintf(`{
+		account(id: "%s") {
 			deposits {
 				id,
 				amount,
@@ -34,7 +50,7 @@ func QueryPosition() (string, error) {
 				}
 			}
 		}
-	}`
+	}`, ethAccount)
 
 	// Create the request payload
 	payload := map[string]interface{}{
