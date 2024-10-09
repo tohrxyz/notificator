@@ -28,9 +28,11 @@ func main() {
 	println("Health factor: ", healthFactor)
 
 	matrixCommanderPath := "/root/matrix-commander/venv/bin/matrix-commander"
+	credentialsPath := "/root/matrix-commander/credentials.json"
+	storePath := "/root/matrix-commander/store"
 	msg := fmt.Sprintf(`Health Factor: %v`, healthFactor)
 
-	cmd := exec.Command(matrixCommanderPath, "-m", msg)
+	cmd := exec.Command(matrixCommanderPath, "-m", msg, "-c", credentialsPath, "-s", storePath)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Printf("Error with sending msg: %s\n", err)
