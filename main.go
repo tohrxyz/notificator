@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"notificator/main/lib"
+	"os/exec"
 )
 
 func main() {
@@ -25,4 +26,15 @@ func main() {
 	healthFactor := math.Round(float64((totalDeposit*0.78)/totalBorrow)*100) / 100
 
 	println("Health factor: ", healthFactor)
+
+	matrixCommanderPath := "root/matrix-commander/venv/bin/matrix-commander"
+	msg := fmt.Sprintf(`Health Factor: %v`, healthFactor)
+
+	cmd := exec.Command(matrixCommanderPath, "-m", msg)
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		fmt.Printf("Error with sending msg: %s\n", err)
+	}
+
+	fmt.Println(string(output))
 }
