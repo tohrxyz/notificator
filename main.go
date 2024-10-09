@@ -27,7 +27,7 @@ func main() {
 
 	println("Health factor: ", healthFactor)
 
-	matrixCommanderPath := "root/matrix-commander/venv/bin/matrix-commander"
+	matrixCommanderPath := "/root/matrix-commander/venv/bin/matrix-commander"
 	msg := fmt.Sprintf(`Health Factor: %v`, healthFactor)
 
 	cmd := exec.Command(matrixCommanderPath, "-m", msg)
