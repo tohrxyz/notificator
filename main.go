@@ -49,7 +49,9 @@ func main() {
 
 		println("Health factor: ", healthFactor)
 
-		msg := fmt.Sprintf(`Health Factor: %v @ %s`, healthFactor, time.Now().Local().String())
+		timeZone := time.FixedZone("GMT+2", 2*60*60)
+		currentTime := time.Now().In(timeZone)
+		msg := fmt.Sprintf(`Health Factor: %v @ %s`, healthFactor, currentTime.Format("2006-01-02 15:04:05"))
 
 		cmd := exec.Command(matrixCommanderPath, "-m", msg, "-c", credentialsFilePath, "-s", storePath)
 		output, err := cmd.CombinedOutput()
