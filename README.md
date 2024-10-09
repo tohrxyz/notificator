@@ -13,9 +13,11 @@ for specified ETH account (Arb ETH) and then it sends health factor to specified
 
 
 ## How to run
-1. set env vars to `.env` (see `.env.example`)
-2. have Golang installed (ofc)
-3. Run it
+1. have [matrix-commander](https://github.com/8go/matrix-commander) installed and logged-in
+2. have [The Graph](https://thegraph.com/studio/) api key
+3. have Golang installed (ofc)
+4. set env vars to `.env` (see `.env.example`)
+5. Run it
   ```sh
   $ go run main.go
   ```
