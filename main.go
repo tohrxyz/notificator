@@ -49,7 +49,7 @@ func main() {
 
 		println("Health factor: ", healthFactor)
 
-		msg := fmt.Sprintf(`Health Factor: %v`, healthFactor)
+		msg := fmt.Sprintf(`Health Factor: %v @ %s`, healthFactor, time.Now().Local().String())
 
 		cmd := exec.Command(matrixCommanderPath, "-m", msg, "-c", credentialsFilePath, "-s", storePath)
 		output, err := cmd.CombinedOutput()
@@ -59,6 +59,6 @@ func main() {
 
 		fmt.Println(string(output))
 
-		time.Sleep(15 * time.Second)
+		time.Sleep(60 * time.Minute)
 	}
 }
