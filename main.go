@@ -45,7 +45,8 @@ func main() {
 		fmt.Printf(`Total deposits: %v\n`, totalDeposit)
 		fmt.Printf(`Total borrows: %v\n`, totalBorrow)
 
-		healthFactor := math.Round(float64((totalDeposit*0.78)/totalBorrow)*100) / 100
+		const LIQUIDATION_TRESHOLD_WBTC = 0.78
+		healthFactor := math.Round(float64((totalDeposit*LIQUIDATION_TRESHOLD_WBTC)/totalBorrow)*100) / 100
 
 		println("Health factor: ", healthFactor)
 
