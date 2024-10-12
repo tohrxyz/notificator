@@ -12,6 +12,8 @@ import (
 )
 
 func main() {
+	const LIQUIDATION_TRESHOLD_WBTC = 0.78
+	previousHF := 0.0
 	err := godotenv.Load()
 	if err != nil {
 		panic(err)
@@ -40,17 +42,19 @@ func main() {
 			fmt.Printf("err.Error(): %v\n", err.Error())
 		}
 
-		fmt.Printf(`Total deposits: %v\n`, totalDeposit)
-		fmt.Printf(`Total borrows: %v\n`, totalBorrow)
-
-		const LIQUIDATION_TRESHOLD_WBTC = 0.78
 		healthFactor := math.Round(float64((totalDeposit*LIQUIDATION_TRESHOLD_WBTC)/totalBorrow)*100) / 100
-
 		println("Health factor: ", healthFactor)
 
 		timeZone := time.FixedZone("GMT+2", 2*60*60)
 		currentTime := time.Now().In(timeZone)
-		msg := fmt.Sprintf(`Health Factor: %v @ %s`, healthFactor, currentTime.Format("2006-01-02 15:04:05"))
+		msg := ``
+		if previousHF > healthFactor {
+			msg = fmt.Sprintf(`🔻🔻 Health Factor: %v @ %s`, healthFactor, currentTime.Format("2006-01-02 15:04:05"))
+		} else if previousHF == healthFactor {
+			msg = fmt.Sprintf(`🫡🫡 Health Factor: %v @ %s`, healthFactor, currentTime.Format("2006-01-02 15:04:05"))
+		} else {
+			msg = fmt.Sprintf(`🤑🤑 Health Factor: %v @ %s`, healthFactor, currentTime.Format("2006-01-02 15:04:05"))
+		}
 
 		cmd := exec.Command(matrixCommanderPath, "-m", msg, "-c", credentialsFilePath, "-s", storePath)
 		output, err := cmd.CombinedOutput()
@@ -59,7 +63,7 @@ func main() {
 		}
 
 		fmt.Println(string(output))
-
+		previousHF = healthFactor
 		time.Sleep(60 * time.Minute)
 	}
 }
