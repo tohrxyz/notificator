@@ -52,31 +52,24 @@ func QueryPosition() (string, error) {
 		}
 	}`, ethAccount)
 
-	// Create the request payload
 	payload := map[string]interface{}{
-		"query":         query,
-		"operationName": "Subgraphs",
-		"variables":     map[string]interface{}{},
+		"query": query,
 	}
 
-	// Encode the payload to JSON
 	jsonData, err := json.Marshal(payload)
 	if err != nil {
 		fmt.Println("Error marshaling JSON:", err)
 		return "", err
 	}
 
-	// Create the HTTP request
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
 	if err != nil {
 		fmt.Println("Error creating request:", err)
 		return "", err
 	}
 
-	// Set the Content-Type header
 	req.Header.Set("Content-Type", "application/json")
 
-	// Send the request
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
@@ -85,13 +78,11 @@ func QueryPosition() (string, error) {
 	}
 	defer resp.Body.Close()
 
-	// Check the response status
 	if resp.StatusCode != http.StatusOK {
 		fmt.Printf("Error: received status code %d\n", resp.StatusCode)
 		return "", err
 	}
 
-	// Read and print the response
 	var responseBody map[string]interface{}
 	if err := json.NewDecoder(resp.Body).Decode(&responseBody); err != nil {
 		fmt.Println("Error decoding response:", err)
