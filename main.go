@@ -35,8 +35,6 @@ func main() {
 			fmt.Printf("err.Error(): %v\n", err.Error())
 		}
 
-		fmt.Print(position + "\n")
-
 		totalDeposit, totalBorrow, err := lib.ProcessSum(position)
 		if err != nil {
 			fmt.Printf("err.Error(): %v\n", err.Error())
